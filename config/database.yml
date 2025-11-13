@@ -1,0 +1,31 @@
+default: &default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  <% if ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
+  adapter: sqlite3
+  database: db/development.sqlite3
+  <% end %>
+
+test:
+  <<: *default
+  <% if ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'].sub(/\/\w+$/, '/tasks_test') %>
+  <% else %>
+  adapter: sqlite3
+  database: db/test.sqlite3
+  <% end %>
+
+production:
+  <<: *default
+  <% if ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
+  adapter: sqlite3
+  database: db/production.sqlite3
+  <% end %>
+
